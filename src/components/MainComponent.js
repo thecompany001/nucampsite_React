@@ -12,6 +12,7 @@ import { PARTNERS } from '../shared/partners';
 import { PROMOTIONS } from '../shared/promotions';
 import About from './AboutComponent';
 
+
 class Main extends Component {
     constructor(props) {
         super(props);
@@ -51,7 +52,8 @@ class Main extends Component {
                     <Route path='/home' component={HomePage} />
                     <Route exact path='/directory' render={() => <Directory campsites={this.state.campsites} />} />
                     <Route path='/directory/:campsiteId' component={CampsiteWithId} />
-                    <Router exact path='/contactus' component={Contact} />
+                    <Route path='/about' component={About} />
+                    <Route exact path='/contactus' component={Contact} />
                     <Redirect to='/home' />
                 </Switch>
                 <Footer />
