@@ -1,9 +1,10 @@
-import React from 'react';
-import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import React, { Component } from 'react';
+import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem, Button, Modal, ModalHeader, ModalBody, Label } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { LocalForm, Control, Errors } from 'react-redux-form';
 
 
-function RenderCampsite({campsite}) {
+function RenderCampsite({ campsite }) {
     return (
         <div class="col-md-5 m-1">
             <Card>
@@ -17,7 +18,7 @@ function RenderCampsite({campsite}) {
     );
 }
 
-function RenderComments({comments}) {
+function RenderComments({ comments }) {
     if (comments) {
         return (
             <div className="col-md-5 m-1">
@@ -30,9 +31,10 @@ function RenderComments({comments}) {
                         </div>
                     )
                 })}
+                <CommentForm />
             </div>
         );
-    } 
+    }
     return <div />
 }
 
@@ -58,6 +60,78 @@ function CampsiteInfo(props) {
         )
     }
     return <div />
+}
+
+class CommentForm extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            rating: '',
+            author: '',
+            text: '',
+            isModalOpen: false
+        }
+    this.toggleModal = this.toggleModal.bind(this);
+    };
+
+    toggleModal() {
+        this.setState({
+            isModalOpen: !this.state.isModalOpen
+        });
+    }
+    handleSubmit(values) {
+        console.log("Current state is: " + JSON.stringify(values));
+        alert("Current state is: " + JSON.stringify(values));
+    }
+
+    render() {
+        return (
+            <div>
+            <Button outline onClick={this.toggleModal}>
+                <i className="fa fa-pencil fa-lg" /> Submit Comment
+            </Button>
+            <Modal isOpen={this.state.isModalOpen}>
+                <ModalHeader toggle={this.toggleModal}>
+                    Submit comment
+                </ModalHeader>
+                <ModalBody>
+                    <LocalForm onSubmit={values => this.handleSubmit(values)}>
+                        <div className="form-group">
+                            <Label htmlFor="rating">Rating</Label>
+                            <Control.select model=".rating" id="rating" name="rating"
+                                placeholder="Rating"
+                                className="form-control">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option></Control.select>
+                        </div>
+                        <div className="form-group">
+                            <Label htmlFor="author">Author</Label>
+
+                            <Control.text model=".author" id="author" name="author"
+                                placeholder="Author"
+                                className="form-control"
+                            />
+                        </div>
+                        <div className="form-group">
+                            <Label htmlFor="text">Text</Label>
+
+                            <Control.textarea model=".text" rows="6" id="text" name="text"
+                                placeholder="Text"
+                                className="form-control"
+                            />
+                        </div>
+                        <Button type="submit">Submit
+                        </Button>
+                    </LocalForm>
+                </ModalBody>
+            </Modal>
+            </div>
+        );
+    }
 }
 
 
