@@ -114,6 +114,10 @@ class CommentForm extends Component {
                             <Control.text model=".author" id="author" name="author"
                                 placeholder="Author"
                                 className="form-control"
+                                validators={{
+                                    required,
+                                    min
+                                }}
                             />
                         </div>
                         <div className="form-group">
