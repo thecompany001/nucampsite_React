@@ -116,8 +116,20 @@ class CommentForm extends Component {
                                 className="form-control"
                                 validators={{
                                     required,
-                                    min
+                                    minLength: minLength(2),
+                                    maxLength: maxLength(15),
+                                }}/>
+                            <Errors 
+                                classname="text-danger"
+                                model=".author"
+                                show="touched"
+                                components="div"
+                                messages={{
+                                    required: 'Required: ',
+                                    minLength: 'Must be at least 2 characters',
+                                    maxLength: 'Must be 15 characters or less'
                                 }}
+                            
                             />
                         </div>
                         <div className="form-group">
