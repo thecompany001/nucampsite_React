@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom';
 import { LocalForm, Control, Errors } from 'react-redux-form';
 
 
+const maxLength = len => val => !(val) || (val.length <= len);
+const minLength = len => val => val && (val.length >= len);
+
+
 function RenderCampsite({ campsite }) {
     return (
         <div class="col-md-5 m-1">
@@ -18,7 +22,7 @@ function RenderCampsite({ campsite }) {
     );
 }
 
-function RenderComments({ comments }) {
+function RenderComments({comments, addComment, campsiteId}) {
     if (comments) {
         return (
             <div className="col-md-5 m-1">
@@ -31,36 +35,13 @@ function RenderComments({ comments }) {
                         </div>
                     )
                 })}
-                <CommentForm />
+                <CommentForm campsiteId={campsiteId} addComment={addComment} />
             </div>
         );
     }
     return <div />
 }
 
-function CampsiteInfo(props) {
-    if (props.campsite) {
-        return (
-            <div className="container">
-                <div className="row">
-                    <div className="col">
-                        <Breadcrumb>
-                            <BreadcrumbItem><Link to="/directory">Directory</Link></BreadcrumbItem>
-                            <BreadcrumbItem active>{props.campsite.name}</BreadcrumbItem>
-                        </Breadcrumb>
-                        <h2>{props.campsite.name}</h2>
-                        <hr />
-                    </div>
-                </div>
-                <div className="row">
-                    <RenderCampsite campsite={props.campsite} />
-                    <RenderComments comments={props.comments} />
-                </div>
-            </div>
-        )
-    }
-    return <div />
-}
 
 class CommentForm extends Component {
     constructor(props) {
@@ -81,8 +62,8 @@ class CommentForm extends Component {
         });
     }
     handleSubmit(values) {
-        console.log("Current state is: " + JSON.stringify(values));
-        alert("Current state is: " + JSON.stringify(values));
+        this.toggleModal();
+        this.props.addComment(this.props.campsiteId, values.rating, values.author, values.text);
     }
 
     render() {
@@ -107,15 +88,23 @@ class CommentForm extends Component {
                             <option value="3">3</option>
                             <option value="4">4</option>
                             <option value="5">5</option></Control.select>
+                            <Errors
+                                className='text-danger'
+                                model='.rating'
+                                show='touched'
+                                component='div'
+                                messages={{
+                                    required: 'Required',
+                                }}
+                            />
                         </div>
                         <div className="form-group">
                             <Label htmlFor="author">Author</Label>
 
                             <Control.text model=".author" id="author" name="author"
-                                placeholder="Author"
+                                placeholder="Your name"
                                 className="form-control"
                                 validators={{
-                                    required,
                                     minLength: minLength(2),
                                     maxLength: maxLength(15),
                                 }}/>
@@ -125,22 +114,20 @@ class CommentForm extends Component {
                                 show="touched"
                                 components="div"
                                 messages={{
-                                    required: 'Required: ',
                                     minLength: 'Must be at least 2 characters',
                                     maxLength: 'Must be 15 characters or less'
                                 }}
-                            
                             />
                         </div>
                         <div className="form-group">
                             <Label htmlFor="text">Text</Label>
 
                             <Control.textarea model=".text" rows="6" id="text" name="text"
-                                placeholder="Text"
+                                placeholder="Please add comments here"
                                 className="form-control"
                             />
                         </div>
-                        <Button type="submit">Submit
+                        <Button type="submit" color="primary">Submit
                         </Button>
                     </LocalForm>
                 </ModalBody>
@@ -148,6 +135,34 @@ class CommentForm extends Component {
             </div>
         );
     }
+}
+
+function CampsiteInfo(props) {
+    if (props.campsite) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <div className="col">
+                        <Breadcrumb>
+                            <BreadcrumbItem><Link to="/directory">Directory</Link></BreadcrumbItem>
+                            <BreadcrumbItem active>{props.campsite.name}</BreadcrumbItem>
+                        </Breadcrumb>
+                        <h2>{props.campsite.name}</h2>
+                        <hr />
+                    </div>
+                </div>
+                <div className="row">
+                    <RenderCampsite campsite={props.campsite} />
+                    <RenderComments 
+                        comments={props.comments}
+                        addComment={props.addComment}
+                        campsiteId={props.campsite.id}
+                    />
+                </div>
+            </div>
+        )
+    }
+    return <div />
 }
 
 
