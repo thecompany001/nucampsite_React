@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem, Button, Modal, ModalHeader, ModalBody, Label } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { LocalForm, Control, Errors } from 'react-redux-form';
+import { Loading } from './LoadingComponent';
 
 
 const maxLength = len => val => !(val) || (val.length <= len);
@@ -10,7 +11,7 @@ const minLength = len => val => val && (val.length >= len);
 
 function RenderCampsite({ campsite }) {
     return (
-        <div class="col-md-5 m-1">
+        <div className="col-md-5 m-1">
             <Card>
                 <CardImg top src={campsite.image} alt={campsite.name} />
                 <CardBody>
@@ -109,7 +110,7 @@ class CommentForm extends Component {
                                     maxLength: maxLength(15),
                                 }}/>
                             <Errors 
-                                classname="text-danger"
+                                className="text-danger"
                                 model=".author"
                                 show="touched"
                                 components="div"
@@ -138,6 +139,24 @@ class CommentForm extends Component {
 }
 
 function CampsiteInfo(props) {
+    if (props.isLoading) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <Loading />
+                </div>
+            </div>
+        );
+    }
+    if (props.errMess) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <h4>{props.errMess}</h4>
+                </div>
+            </div>
+        )
+    }
     if (props.campsite) {
         return (
             <div className="container">
