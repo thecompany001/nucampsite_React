@@ -205,7 +205,7 @@ class Contact extends Component {
                                         className="form-control"
                                     />
                                 </Col>
-                            </Row>
+                            </Ro>
                             <Row className="form-group">
                                 <Col md={{size: 10, offset: 2}}>
                                     <Button type="submit" color="primary">
