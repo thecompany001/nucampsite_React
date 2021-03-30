@@ -54,7 +54,7 @@ class Main extends Component {
         }
 
         const CampsiteWithId = ({match}) => {
-            return(
+            return (
                 <CampsiteInfo 
                     campsite={this.props.campsites.campsites.filter(campsite => campsite.id === +match.params.campsiteId)[0]}
                     isLoading={this.props.campsites.isLoading}
@@ -70,7 +70,7 @@ class Main extends Component {
             <div>
                 <Header />
                 <TransitionGroup>
-                    <CSSTransition key={this.props.location.key}> classNames="page"
+                    <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>
                         <Switch>
                             <Route path='/home' component={HomePage} />
                             <Route exact path='/directory' render={() => <Directory campsites={this.props.campsites} />} />
@@ -79,6 +79,7 @@ class Main extends Component {
                             <Route exact path='/contactus' render={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} />} />
                             <Redirect to='/home' />
                         </Switch>
+                    </CSSTransition>
                 </TransitionGroup>
                 <Footer />
             </div>
