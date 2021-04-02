@@ -40,7 +40,7 @@ function RenderComments({comments, postComment, campsiteId}) {
                         return (
                             <Fade in>
                                 <div key>
-                                    <p>{comment.text} <br />-- {comment.author}
+                                    <p>{comment.text} <br />-- {comment.author},
                                         {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(new Date(Date.parse(comment.date)))}</p>
                                 </div>
                             </Fade>
