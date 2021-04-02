@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Breadcrumb, BreadcrumbItem, Button, Label, Col, Row } from 'reactstrap';
+import { Breadcrumb, BreadcrumbItem,
+    Button, Label, Col, Row } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, Form, Errors } from 'react-redux-form';
 
@@ -10,6 +11,7 @@ const isNumber = val => !isNaN(+val);
 const validEmail = val => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
 class Contact extends Component {
+
     constructor(props) {
         super(props);
 
@@ -18,7 +20,6 @@ class Contact extends Component {
             lastName: '',
             phoneNum: '',
             email: '',
-            agree: '',
             agree: false,
             contactType: 'By Phone',
             feedback: '',
@@ -33,12 +34,11 @@ class Contact extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-
     handleSubmit(values) {
-        console.log("Current state is: " + JSON.stringify(values));
-        alert("Current state is: " + JSON.stringify(values));
+        this.props.postFeedback(values);
         this.props.resetFeedbackForm();
     }
+
     render() {
 
         return (
@@ -47,7 +47,7 @@ class Contact extends Component {
                     <div className="col">
                         <Breadcrumb>
                             <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>
-                            <BreadcrumbItem active>Contact us</BreadcrumbItem>
+                            <BreadcrumbItem active>Contact Us</BreadcrumbItem>
                         </Breadcrumb>
                         <h2>Contact Us</h2>
                         <hr />
@@ -83,7 +83,7 @@ class Contact extends Component {
                                         placeholder="First Name"
                                         className="form-control"
                                         validators={{
-                                            required,
+                                            required, 
                                             minLength: minLength(2),
                                             maxLength: maxLength(15)
                                         }}
@@ -94,7 +94,7 @@ class Contact extends Component {
                                         show="touched"
                                         component="div"
                                         messages={{
-                                            required:'Required',
+                                            required: 'Required',
                                             minLength: 'Must be at least 2 characters',
                                             maxLength: 'Must be 15 characters or less'
                                         }}
@@ -119,7 +119,7 @@ class Contact extends Component {
                                         show="touched"
                                         component="div"
                                         messages={{
-                                            required:'Required',
+                                            required: 'Required',
                                             minLength: 'Must be at least 2 characters',
                                             maxLength: 'Must be 15 characters or less'
                                         }}
@@ -145,9 +145,9 @@ class Contact extends Component {
                                         show="touched"
                                         component="div"
                                         messages={{
-                                            required:'Required',
-                                            minLength: 'Must be at least 10 characters',
-                                            maxLength: 'Must be 15 characters or less',
+                                            required: 'Required',
+                                            minLength: 'Must be at least 10 numbers',
+                                            maxLength: 'Must be 15 numbers or less',
                                             isNumber: 'Must be a number'
                                         }}
                                     />
@@ -170,7 +170,7 @@ class Contact extends Component {
                                         show="touched"
                                         component="div"
                                         messages={{
-                                            required:'Required',
+                                            required: 'Required',
                                             validEmail: 'Invalid email address'
                                         }}
                                     />
@@ -220,7 +220,5 @@ class Contact extends Component {
         );
     }
 }
-
-
 
 export default Contact;
